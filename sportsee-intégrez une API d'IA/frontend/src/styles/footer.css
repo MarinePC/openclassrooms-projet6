@@ -1,0 +1,45 @@
+/* src/styles/footer.css */
+
+.Footer {
+  width: 100%;
+  background: #ffffff;
+  margin-top: auto;
+}
+
+.FooterInner {
+  height: 60.66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.FooterLeft {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+.FooterRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.FooterLink {
+  color: #111111;
+  text-decoration: none;
+}
+
+.FooterLink:hover {
+  text-decoration: underline;
+}
+
+.FooterLogo {
+  width: 19px;
+  height: 20.66px;
+  display: block;
+}

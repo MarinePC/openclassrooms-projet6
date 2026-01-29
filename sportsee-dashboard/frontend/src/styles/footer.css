@@ -1,0 +1,45 @@
+/* src/styles/footer.css */
+
+.dashFooter {
+  width: 100%;
+  background: #ffffff;
+  margin-top: auto;
+}
+
+.dashFooterInner {
+  height: 60.66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.dashFooterLeft {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+.dashFooterRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.dashFooterLink {
+  color: #111111;
+  text-decoration: none;
+}
+
+.dashFooterLink:hover {
+  text-decoration: underline;
+}
+
+.dashFooterLogo {
+  width: 19px;
+  height: 20.66px;
+  display: block;
+}

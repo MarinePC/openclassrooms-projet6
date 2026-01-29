@@ -1,0 +1,188 @@
+/* src/styles/profile.css */
+
+.profilePage {
+max-width: var(--container);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.profileMain {
+  flex: 1;              /* IMPORTANT : prend l’espace restant */
+  width: 100%;
+}
+
+.profileWrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.profileCard {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(18, 18, 18, 0.06);
+}
+
+/* ===== Left column ===== */
+
+.profileColLeft {
+  display: grid;
+  gap: 20px;
+}
+
+.profileIdentityCard {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 32px 24px 32px;
+  min-height: 120px;
+}
+
+.profileAvatarWrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: #e9ecff;
+}
+
+.profileAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profileName {
+  font-size: 22px;
+  font-weight: 500;
+  color: #111111;
+}
+
+.profileMember {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #707070;
+}
+
+.profileInfoCard {
+  padding: 40px 28px 60px 28px;
+}
+
+.profileInfoTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #111111;
+}
+
+.profileInfoDivider {
+  height: 1px;
+  background:#E7E7E7;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.profileInfoRows {
+  display: grid;
+  gap: 24px;
+}
+
+.profileInfoRow {
+  display: flex;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.profileInfoLabel
+.profileInfoValue {
+  color: rgba(15, 23, 42, 0.55);
+  font-size: 16px;
+  font-weight: 500;
+  color: #707070;
+}
+
+
+/* ===== Right column ===== */
+
+.profileStatsHeader {
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+.profileStatsTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #111111;
+  margin: 0;
+}
+
+.profileStatsSubtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color:#707070;
+}
+
+.profileStatsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 19px;
+  margin-top: 32px;
+}
+
+.profileStatCard {
+  background: #0B23F4;
+  border-radius: 10px;
+  padding: 20px 30px;
+  color: white;
+  min-height: 103px;
+  min-width: 278px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profileStatLabel {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profileStatValue {
+  margin-top: 19px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.profileStatUnit {
+  font-size: 16px;
+  font-weight: 500;
+  color : #B6BDFC
+}
+
+/* La dernière card “Nombre de sessions” occupe une demi largeur sur la maquette (colonne gauche). */
+.profileStatsGrid > :nth-child(5) {
+  grid-column: 1 / 2;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .profileStatsGrid {
+    grid-template-columns: 1fr;
+  }
+  .profileStatsGrid > :nth-child(5) {
+    grid-column: auto;
+  }
+}

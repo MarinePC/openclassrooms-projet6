@@ -1,0 +1,86 @@
+/* src/styles/header.css */
+
+.dashHeader {
+  width: 100%;
+}
+
+.dashHeaderInner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 108px;
+}
+
+
+.dashLogoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dashLogo {
+  width: 19px;
+  height: 21px;
+}
+
+.dashLogoText {
+  width: 132.97px;
+  height: 23.41px;
+  display: block;
+}
+
+.dashLogo,
+.dashLogoText {
+  display: block;
+}
+
+
+/* Nav pill */
+.dashNav {
+  width: 561px;
+  height: 49px;
+  padding: 16px 48px;
+
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.dashNavLink {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dashNavLink:hover,
+.dashNavLink:active {
+  color: var(--blue);
+}
+
+.dashNavLinkLogout {
+  color: var(--blue);
+}
+
+.dashNavLinkLogout:hover {
+  color: var(--blue);
+}
+
+
+.dashNavSeparator {
+  width: 0.5px;
+  height: 18px;
+  background: var(--blue);
+}

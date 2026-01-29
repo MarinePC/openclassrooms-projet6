@@ -1,0 +1,212 @@
+/* Layout global du panel */
+.chatPanel{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Zone messages scrollable */
+.chatMessages{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 24px;
+}
+
+.chatEmpty{
+  margin-top: 79px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  color: #0B23F4;
+}
+
+.chatThread{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Bulles */
+.chatBubble{
+  max-width: 720px;
+  border-top-left-radius: 20px;
+  border-top-right-radius : 20px;
+  border-bottom-left-radius: 20px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111827;
+  white-space: pre-wrap;
+}
+
+.chatBubbleUser{
+  margin-left: auto;
+  background: #F7D6CF;
+  margin-top: 20px;
+}
+
+.chatBubbleBot{
+  margin-right: auto;
+  background: #E7E7E7;
+}
+
+
+/* Erreur */
+.chatErrorWrap{
+  padding: 0 24px 8px;
+}
+
+.chatError{
+  border-radius: 10px;
+  border: 1px solid #FECACA;
+  background: #FEF2F2;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #B91C1C;
+}
+
+.chatErrorBtn{
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Composer en bas */
+
+.chatInputWrap{
+  position: relative;
+  border: 1px solid #e6e8ef;
+  border-radius: 18px;
+  background: #fff;
+  padding: 16px;
+  min-height: 140px;
+  margin-bottom: 24px;
+}
+
+.chatInputTop{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chatInputStar{
+  width: 20px;
+  height: 20px;
+}
+
+.chatInputHint{
+  color: #707070;
+  font-size: 14px;
+}
+
+.chatInputArea{
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font-family: "inter";
+  font-size: 14px;
+  padding-right: 96px;
+  padding-bottom: 70px;
+  min-height: 60px;
+  color: #111111;
+}
+
+.chatSend{
+  position: absolute;
+  right: 26px;
+  bottom: 16px;
+
+  height: 48px;
+  width: 48px;
+  border-radius: 10px;
+
+  border: none;
+  background: #0B23F4;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatComposer{
+  padding: 0 24px 6px;
+}
+
+/* Chips */
+.chatChips{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px){
+  .chatChips{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.chatChip{
+  border-radius: 8px;
+  border : none;
+  background:#F2F3FF;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #707070;
+  cursor: pointer;
+  text-align: left;
+}
+
+
+
+.chatOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.chatModal {
+  width: 1060px;
+  max-width: calc(100vw - 48px);
+  height: 680px;
+  max-height: calc(100vh - 48px);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.chatClose {
+  position: absolute;
+  top: 22px;
+  right: 33px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: #707070;
+}
+
+.chatShell {
+  height: 100%;
+  padding: 22px 33px; /* place pour le bouton fermer */
+  box-sizing: border-box;
+  overflow: hidden; /* important pour éviter le débordement */
+}

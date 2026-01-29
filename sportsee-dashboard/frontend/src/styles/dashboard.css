@@ -1,0 +1,521 @@
+/* src/styles/dashboard.css */
+
+/* =========================
+   Bloc 1 - Ask
+========================= */
+.dashAskCard {
+  height: 99px;
+  padding: 39px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashAskLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.dashAskIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.dashAskText {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--blue);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashAskBtn {
+  width: 269px;
+  height: 51px;
+  padding: 16px 40px;
+  border-radius: var(--radius-ui);
+  border: none;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.dashAskBtn:hover {
+  background: #5465F7;
+}
+
+/* =========================
+   Bloc 2 - Profile
+========================= */
+.dashProfileCard {
+  width: 100%;
+  max-width: 1052px;
+  height: 181px;
+  padding: 32px 52px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.dashProfileLeft,
+.dashProfileInfo {
+  height: 117px;
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  min-width: 0;
+}
+
+.dashAvatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.08);
+  flex: 0 0 auto;
+}
+
+.dashAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dashProfileInfos,
+.dashProfileTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dashProfileName {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  color: #111111;
+  line-height: 1.1;
+}
+
+.dashProfileMeta {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #707070;
+}
+
+.dashDistanceWrap {
+  width: 372px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.dashDistanceLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: #707070;
+  white-space: nowrap;
+}
+
+.dashDistanceCard {
+  width: 183px;
+  height: 90px;
+  padding: 28px 27px;
+  border-radius: var(--radius-ui);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: var(--blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+}
+
+.dashDistanceIcon {
+  width: 34px;
+  height: 34px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.dashDistanceValue {
+  font-size: 100%;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* =========================
+   Performances
+========================= */
+.dashPerfBlock {
+  width: 100%;
+  max-width: 1052px;
+  height: 1043px;
+  margin-top: var(--gap-header-content);
+  display: flex;
+  flex-direction: column;
+  gap: 71px;
+}
+
+.dashPerfLast {
+  height: 543px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.dashPerfTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  color: #111111;
+}
+
+.dashPerfChart {
+  height: 484px;
+  padding: 16px 40px 24px 40px;
+  border-radius: var(--radius-ui);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashPerfChartKm {
+  position: relative;
+  padding: 16px 40px 40px 40px;
+}
+
+/* =========================
+   Cette semaine
+========================= */
+.dashWeekBlock {
+  width: 100%;
+  max-width: 1052px;
+  height: 429px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashWeekSubtitle {
+  margin: 9px 0 32px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #707070;
+}
+
+.dashWeekGoalCard {
+  width: 100%;
+  max-width: 450px;
+  height: 342px;
+  padding: 16px 38px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-ui);
+}
+
+.dashWeekStatCard {
+  width: 100%;
+  max-width: 572px;
+  height: 103px;
+  padding: 20px 30px;
+  border-radius: var(--radius-ui);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 19px;
+}
+
+/* =========================
+   Bloc mensuel - header + nav
+========================= */
+.dashMonthlyHeader {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  justify-content: space-between;
+}
+
+.dashMonthlyTitleWrap {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  gap: 10px;
+}
+
+.dashMonthlyKpi {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--blue);
+  line-height: 1.1;
+}
+
+.dashMonthlySub {
+  font-size: 12px;
+  font-weight: 400;
+  color: #707070;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashMonthlyNav {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.dashNavIconWrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+}
+
+.dashNavIcon {
+  position: absolute;
+  inset: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.dashNavIconHover {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+/* Hover = bleu */
+.dashNavBtn:hover:not(:disabled) .dashNavIconHover {
+  opacity: 1;
+}
+
+.dashNavBtn:hover:not(:disabled) .dashNavIconDefault {
+  opacity: 0;
+}
+
+/* Flèche gauche bleue = miroir */
+.dashNavIconHoverLeft {
+  transform: scaleX(-1);
+}
+
+.dashMonthlyRange {
+  font-size: 12px;
+  font-weight: 400;
+  color: #111111;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Boutons nav */
+.dashNavBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashNavBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Monthly chart wrapper */
+.dashMonthlyChartPad {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 8px;
+  padding-bottom: 0;
+  margin-top: 40px;
+  display: block;
+}
+
+/* Helper si ton composant utilise .kmChart */
+.kmChart {
+  width: 100%;
+  max-width: 365px;
+  height: 307px;
+}
+
+/* =========================
+   BPM (bloc 2)
+========================= */
+.dashBpmKpi {
+  font-size: 22px;
+  font-weight: 500;
+  color: #f4320b;
+  line-height: 1.1;
+}
+
+/* Zone fixe pour coller à la maquette - bloc 2 */
+.bpmChart {
+  height: 444px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* =========================
+   Donut (bloc 3)
+========================= */
+.goalDonutWrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.goalDonutTitle {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.goalDonutX {
+  color: var(--blue);
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.goalDonutOn {
+  color: #b6bdfc;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.goalDonutSub {
+  color: #717171;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 7px;
+}
+
+.goalDonutChart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goalDonutChartContainer {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 191px;
+}
+
+.goalDonutLegendLeft {
+  position: absolute;
+  left: 30px;
+  top: 160px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #717171;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.goalDonutLegendRight {
+  position: absolute;
+  right: 40px;
+  top: 50px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #717171;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.goalDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.goalDotDone {
+  background: var(--blue);
+}
+
+.goalDotRem {
+  background: #b6bdfc;
+}
+
+.goalChartBox {
+  width: 306px;
+  height: 191px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashWeekStatValue {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.dashWeekStatValueBlue {
+  color: var(--blue);
+}
+
+.dashWeekStatValueRed {
+  color: #ef4444;
+}
+
+.dashWeekStatUnit {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.dashWeekStatUnitDuration {
+  color: #B6BDFC;
+}
+
+.dashWeekStatUnitDistance {
+  color: #FCC1B6;
+}
+
+.dashWeekStatLine {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dashWeekStatValue,
+.dashWeekStatUnit {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+}
