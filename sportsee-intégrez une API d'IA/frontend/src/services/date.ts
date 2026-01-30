@@ -8,11 +8,7 @@ export function toISODate(d: Date): string {
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
 
-/**
- * Normalise n'importe quelle date ISO-like vers "YYYY-MM-DD"
- * - "2024-01-08" -> "2024-01-08"
- * - "2024-01-08T10:12:00Z" -> "2024-01-08"
- */
+
 export function normalizeISODateKey(input: string | null | undefined): string | null {
   const s = (input ?? "").trim();
   if (!s) return null;
@@ -20,11 +16,7 @@ export function normalizeISODateKey(input: string | null | undefined): string | 
   return key.length >= 10 ? key.slice(0, 10) : null;
 }
 
-/**
- * Parse une date ISO "YYYY-MM-DD" OU "YYYY-MM-DDTHH:mm:ssZ"
- * Retourne une Date locale à minuit.
- * Si invalide -> Date(0) (évite crash UI)
- */
+
 export function parseISODate(dateStr: string): Date {
   const key = normalizeISODateKey(dateStr);
   if (!key) return new Date(0);
