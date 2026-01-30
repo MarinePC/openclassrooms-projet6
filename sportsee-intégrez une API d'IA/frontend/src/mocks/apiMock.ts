@@ -3,19 +3,19 @@
 export type UserProfile = {
   firstName: string;
   lastName: string;
-  createdAt: string; // "YYYY-MM-DD"
+  createdAt: string; 
   age: number;
   weight: number;
   height: number;
-  gender?: string; // ✅ Ajout du genre
+  gender?: string; 
   profilePicture: string;
 };
 
 export type UserStatistics = {
-  totalDistance: number | string; // ✅ Accepte les deux types
+  totalDistance: number | string;
   totalSessions: number;
-  totalDuration: number; // minutes
-  weeklyGoal: number; // ✅ Toujours un number
+  totalDuration: number; 
+  weeklyGoal: number; 
 };
 
 export type UserInfo = {
@@ -30,16 +30,14 @@ export type HeartRate = {
 };
 
 export type UserActivity = {
-  date: string; // "YYYY-MM-DD"
-  distance: number; // km
-  duration: number; // minutes
+  date: string; 
+  distance: number; 
+  duration: number; 
   heartRate: HeartRate;
   caloriesBurned: number;
 };
 
-/* =====================
-   RAW DATA (structure "data.json like")
-===================== */
+/* data */
 
 type RawUserInfos = {
   firstName: string;
@@ -48,7 +46,7 @@ type RawUserInfos = {
   age: number;
   weight: number;
   height: number;
-  gender?: string; // ✅ Ajout du champ gender
+  gender?: string; 
   profilePicture: string;
   goal?: number;
   weeklyGoal?: number;
@@ -64,14 +62,12 @@ type RawUser = {
   password?: string;
 };
 
-/* =====================
-   Mock dataset (EXEMPLES)
-===================== */
+/* Mock dataset */
 
 const USERS: RawUser[] = [
   {
     id: "user123",
-    weeklyGoal: 15, // ✅ Goal au niveau racine
+    weeklyGoal: 15, 
     userInfos: {
       firstName: "Sophie",
       lastName: "Martin",
@@ -79,9 +75,9 @@ const USERS: RawUser[] = [
       age: 28,
       weight: 62,
       height: 165,
-      gender: "Femme", // ✅ Ajout du genre
+      gender: "Femme", 
       profilePicture: "/images/sophie.jpg",
-      weeklyGoal: 2, // ✅ Goal aussi dans userInfos
+      weeklyGoal: 2,
     },
     runningData: [
       { date: "2025-02-10", distance: 3.5, duration: 22, heartRate: { min: 105, max: 155, average: 130 }, caloriesBurned: 220 },
@@ -94,12 +90,10 @@ const USERS: RawUser[] = [
   },
 ];
 
-// 👉 Utilisateur par défaut
+
 export const DEFAULT_USER_ID = "user123";
 
-/* =====================
-   Helpers
-===================== */
+/* helpers */
 
 function pickUser(userId = DEFAULT_USER_ID): RawUser {
   const u = USERS.find((x) => x.id === userId);
@@ -149,27 +143,25 @@ function buildUserInfo(raw: RawUser): UserInfo {
       age: raw.userInfos.age,
       weight: raw.userInfos.weight,
       height: raw.userInfos.height,
-      gender: raw.userInfos.gender, // ✅ Ajout du genre
+      gender: raw.userInfos.gender, 
       profilePicture: raw.userInfos.profilePicture,
     },
     statistics: {
-      totalDistance: totalDistance, // ✅ Retourner comme number
+      totalDistance: totalDistance, 
       totalSessions,
       totalDuration,
-      weeklyGoal, // ✅ Maintenant correctement typé comme number
+      weeklyGoal, 
     },
   };
 
   console.log('🏗️ Built UserInfo:', userInfo);
   console.log('🎯 weeklyGoal in statistics:', userInfo.statistics.weeklyGoal);
-  console.log('👤 gender in profile:', userInfo.profile.gender); // ✅ Debug du genre
+  console.log('👤 gender in profile:', userInfo.profile.gender); 
   
   return userInfo;
 }
 
-/* =====================
-   MOCK API (functions)
-===================== */
+/* MOCK API */
 
 export function mockGetUserInfo(userId = DEFAULT_USER_ID): UserInfo {
   console.log('📞 mockGetUserInfo called for userId:', userId);
