@@ -1,8 +1,6 @@
 /* src/styles/dashboard.css */
 
-/* =========================
-   Bloc 1 - Ask
-========================= */
+/* BLOC HEADER */
 .dashAskCard {
   height: 99px;
   padding: 39px 52px;
@@ -53,9 +51,6 @@
   background: #5465F7;
 }
 
-/* =========================
-   Bloc 2 - Profile
-========================= */
 .dashProfileCard {
   width: 100%;
   max-width: 1052px;
@@ -72,7 +67,6 @@
   );
 }
 
-.dashProfileLeft,
 .dashProfileInfo {
   height: 117px;
   display: flex;
@@ -96,7 +90,6 @@
   object-fit: cover;
 }
 
-.dashProfileInfos,
 .dashProfileTexts {
   display: flex;
   flex-direction: column;
@@ -119,6 +112,7 @@
   color: #707070;
 }
 
+/* Distance totale */
 .dashDistanceWrap {
   width: 372px;
   height: 90px;
@@ -162,7 +156,7 @@
 }
 
 /* =========================
-   Performances
+   SECTION PERFORMANCES
 ========================= */
 .dashPerfBlock {
   width: 100%;
@@ -206,48 +200,7 @@
 }
 
 /* =========================
-   Cette semaine
-========================= */
-.dashWeekBlock {
-  width: 100%;
-  max-width: 1052px;
-  height: 429px;
-  display: flex;
-  flex-direction: column;
-}
-
-.dashWeekSubtitle {
-  margin: 9px 0 32px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #707070;
-}
-
-.dashWeekGoalCard {
-  width: 100%;
-  max-width: 450px;
-  height: 342px;
-  padding: 16px 38px;
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-ui);
-}
-
-.dashWeekStatCard {
-  width: 100%;
-  max-width: 572px;
-  height: 103px;
-  padding: 20px 30px;
-  border-radius: var(--radius-ui);
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 19px;
-}
-
-/* =========================
-   Bloc mensuel - header + nav
+   NAVIGATION (blocs 1 et 2)
 ========================= */
 .dashMonthlyHeader {
   display: flex;
@@ -261,13 +214,6 @@
   flex-direction: column;
   flex: 0 1 auto;
   gap: 10px;
-}
-
-.dashMonthlyKpi {
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--blue);
-  line-height: 1.1;
 }
 
 .dashMonthlySub {
@@ -285,6 +231,29 @@
   align-items: center;
   flex: 0 0 auto;
   gap: 6px;
+}
+
+.dashMonthlyRange {
+  font-size: 12px;
+  font-weight: 400;
+  color: #111111;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.dashNavBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashNavBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
 }
 
 .dashNavIconWrap {
@@ -306,7 +275,6 @@
   transition: opacity 120ms ease;
 }
 
-/* Hover = bleu */
 .dashNavBtn:hover:not(:disabled) .dashNavIconHover {
   opacity: 1;
 }
@@ -315,36 +283,18 @@
   opacity: 0;
 }
 
-/* Flèche gauche bleue = miroir */
 .dashNavIconHoverLeft {
   transform: scaleX(-1);
 }
 
-.dashMonthlyRange {
-  font-size: 12px;
-  font-weight: 400;
-  color: #111111;
-  line-height: 1;
-  white-space: nowrap;
+/* BLOC 1  */
+.dashMonthlyKpi {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--blue);
+  line-height: 1.1;
 }
 
-/* Boutons nav */
-.dashNavBtn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dashNavBtn:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-
-/* Monthly chart wrapper */
 .dashMonthlyChartPad {
   padding-left: 0;
   padding-right: 0;
@@ -354,16 +304,13 @@
   display: block;
 }
 
-/* Helper si ton composant utilise .kmChart */
 .kmChart {
   width: 100%;
   max-width: 365px;
   height: 307px;
 }
 
-/* =========================
-   BPM (bloc 2)
-========================= */
+/* bLOC 2 */
 .dashBpmKpi {
   font-size: 22px;
   font-weight: 500;
@@ -371,7 +318,6 @@
   line-height: 1.1;
 }
 
-/* Zone fixe pour coller à la maquette - bloc 2 */
 .bpmChart {
   height: 444px;
   width: 100%;
@@ -379,9 +325,33 @@
   align-items: flex-end;
 }
 
-/* =========================
-   Donut (bloc 3)
-========================= */
+/* BLOC 3*/
+.dashWeekBlock {
+  width: 100%;
+  max-width: 1052px;
+  height: 429px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashWeekSubtitle {
+  margin: 9px 0 32px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #707070;
+}
+
+/* Donut - Objectif hebdomadaire */
+.dashWeekGoalCard {
+  width: 100%;
+  max-width: 450px;
+  height: 342px;
+  padding: 16px 38px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-ui);
+}
+
 .goalDonutWrap {
   width: 100%;
   height: 100%;
@@ -414,6 +384,13 @@
   margin-top: 7px;
 }
 
+.goalDonutChartContainer {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 191px;
+}
+
 .goalDonutChart {
   width: 100%;
   height: 100%;
@@ -422,11 +399,13 @@
   justify-content: center;
 }
 
-.goalDonutChartContainer {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  min-height: 191px;
+.goalChartBox {
+  width: 306px;
+  height: 191px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .goalDonutLegendLeft {
@@ -470,19 +449,32 @@
   background: #b6bdfc;
 }
 
-.goalChartBox {
-  width: 306px;
-  height: 191px;
-  margin: 0 auto;
+/* Stats - Durée et Distance */
+.dashWeekStatCard {
+  width: 100%;
+  max-width: 572px;
+  height: 103px;
+  padding: 20px 30px;
+  border-radius: var(--radius-ui);
+  background: #ffffff;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  gap: 19px;
+}
+
+.dashWeekStatLine {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 
 .dashWeekStatValue {
   font-size: 22px;
   font-weight: 500;
   line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .dashWeekStatValueBlue {
@@ -497,6 +489,8 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .dashWeekStatUnitDuration {
@@ -505,17 +499,4 @@
 
 .dashWeekStatUnitDistance {
   color: #FCC1B6;
-}
-
-.dashWeekStatLine {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.dashWeekStatValue,
-.dashWeekStatUnit {
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
 }
