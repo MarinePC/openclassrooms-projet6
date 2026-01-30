@@ -1,7 +1,7 @@
 // src/app/dashboard/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Header from "@/components/layout/Header";
@@ -26,28 +26,22 @@ export default function DashboardPage() {
 
   const [chatOpen, setChatOpen] = useState(false);
 
-  /* =====================
-     Auth guard
-  ===================== */
   useEffect(() => {
     if (!isAuthenticated) router.replace(ROUTES.login);
   }, [isAuthenticated, router]);
 
-  /* =====================
-     DATA (single source of truth)
-  ===================== */
   const {
-    // base loading/errors
     loadingBase,
     errorBase,
 
-    // header
     fullName,
     memberSince,
     totalDistanceKm,
     profilePicture,
 
-    // bloc 1 (km)
+    userInfo,
+    activities,
+
     monthlyKm,
     monthlyKpiLabel,
     monthlyRangeLabel,
@@ -56,7 +50,6 @@ export default function DashboardPage() {
     goPrevMonth,
     goNextMonth,
 
-    // bloc 2 (bpm)
     weeklyBpmRangeLabel,
     bpmKpiLabel,
     hasPrevWeekData,
@@ -65,16 +58,27 @@ export default function DashboardPage() {
     goNextWeek,
     heartComposedData,
 
-    // bloc 3 (goal donut + stats)
     weeklyGoal,
     weekSubtitle,
     weekDuration,
     weekDistance,
   } = useDashboardData({ isAuthenticated, dataSource });
 
-  // Fallbacks sûrs (au cas où)
   const safeHeartData = heartComposedData ?? [];
   const safeWeeklyGoal = weeklyGoal ?? { goal: 0, done: 0 };
+
+  const recentActivities = useMemo(() => {
+    if (!Array.isArray(activities) || activities.length === 0) return [];
+
+    return [...activities]
+      .filter((a) => a && a.date)
+      .sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+      })
+      .slice(0, 10);
+  }, [activities]);
 
   return (
     <div>
@@ -91,18 +95,16 @@ export default function DashboardPage() {
               onOpenChat={() => setChatOpen(true)}
             />
 
-            {/* ✅ CORRECTION : Passer fullName et profilePicture au ChatbotModal */}
-            <ChatbotModal 
-              open={chatOpen} 
+            <ChatbotModal
+              open={chatOpen}
               onClose={() => setChatOpen(false)}
               profilePicture={profilePicture}
               fullName={fullName}
+              userInfo={userInfo}
+              recentActivities={recentActivities}
             />
 
             <section className="dashPerfBlock">
-              {/* =====================
-                  Bloc 1 + Bloc 2
-              ===================== */}
               <div className="dashPerfLast">
                 <h2 className="dashPerfTitle">Vos dernières performances</h2>
 
@@ -247,15 +249,12 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* =====================
-                  Bloc 3 - Cette semaine
-              ===================== */}
+              {/* Bloc 3 - Cette semaine */}
               <div className="dashWeekBlock">
                 <h3 className="dashPerfTitle">Cette semaine</h3>
                 <div className="dashWeekSubtitle">{weekSubtitle}</div>
 
                 <div className="dashWeekGrid">
-                  {/* Donut */}
                   <div className="dashCard dashWeekGoalCard">
                     {loadingBase && <p className="dashLoading">Chargement…</p>}
                     {!loadingBase && errorBase && (
@@ -266,9 +265,7 @@ export default function DashboardPage() {
                     )}
                   </div>
 
-                  {/* Stats (2 cards distinctes) */}
                   <div className="dashWeekSideCards">
-                    {/* Card 1 - Durée */}
                     <div className="dashCard dashWeekStatCard">
                       <div className="dashSmallLabel">Durée d&apos;activité</div>
                       <div className="dashWeekStatLine">
@@ -281,7 +278,6 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    {/* Card 2 - Distance */}
                     <div className="dashCard dashWeekStatCard">
                       <div className="dashSmallLabel">Distance</div>
                       <div className="dashWeekStatLine">
