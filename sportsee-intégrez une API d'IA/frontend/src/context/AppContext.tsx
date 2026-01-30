@@ -21,27 +21,20 @@ type AppContextType = {
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  /**
-   * ⚠️ IMPORTANT
-   * authTick ne sert QU'À forcer un re-render
-   * La vérité vient TOUJOURS du cookie
-   */
+
   const [, setAuthTick] = useState(0);
-
-  // ✅ SOURCE UNIQUE DE VÉRITÉ
   const isAuthenticated = Boolean(getAuthToken());
-
   const [dataSource, setDataSource] = useState<DataSource>("api");
 
 
   function login(token: string) {
-    setAuthToken(token); // écrit le cookie
-    setAuthTick((t) => t + 1); // force re-render
+    setAuthToken(token); 
+    setAuthTick((t) => t + 1); 
   }
 
   function logout() {
-    clearAuthToken(); // supprime le cookie
-    setAuthTick((t) => t + 1); // force re-render
+    clearAuthToken();
+    setAuthTick((t) => t + 1); 
   }
 
   return (
@@ -66,3 +59,4 @@ export function useAppContext() {
   }
   return context;
 }
+
