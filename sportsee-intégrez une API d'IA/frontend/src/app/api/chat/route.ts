@@ -61,10 +61,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1) récupère le prompt depuis Express
+    /* recup prompt */
     const SYSTEM_PROMPT = await fetchSystemPrompt();
 
-    // 2) timeout propre pour l’appel Mistral
+   
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12_000);
 
@@ -117,7 +117,7 @@ export async function POST(req: Request) {
 
     console.info(`[api/chat] success id=${requestId}`);
 
-    // ✅ Contrat stable pour le frontend
+
     return NextResponse.json({ reply }, { status: 200 });
   } catch (e: any) {
     const isAbort = e?.name === "AbortError";
