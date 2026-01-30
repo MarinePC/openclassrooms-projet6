@@ -1,17 +1,10 @@
 /* src/styles/components.css */
-/* UI réutilisable : cards, titres, états, helpers */
 
-/* =========================
-   Cards (base)
-========================= */
 .dashCard {
   background: #ffffff;
   border-radius: var(--radius-card);
 }
 
-/* =========================
-   Status
-========================= */
 .dashLoading {
   margin: 0;
   font-size: 14px;
@@ -24,18 +17,13 @@
   color: #dc2626;
 }
 
-/* =========================
-   Chart helper
-========================= */
+
 .dashChart {
   width: 100%;
   flex: 1;
   min-height: 0;
 }
 
-/* =========================
-   Typography helpers
-========================= */
 .dashSmallLabel {
   font-size: 14px;
   font-weight: 400;
