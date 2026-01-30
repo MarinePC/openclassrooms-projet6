@@ -1,37 +1,26 @@
 /* src/styles/base.css */
 
-/* =========================
-   Tokens (global)
-========================= */
+/* global */
 :root {
-  /* Colors */
   --bg-page: #f2f3ff;
   --text: #111111;
   --muted: rgba(17, 17, 17, 0.6);
   --blue: #0b23f4;
 
-  /* Layout */
   --container: 1140px;
   --content: 1060px;
   --pad-top: 35px;
   --pad-bottom: 80px;
-
-  /* Spacing */
+  
   --gap-header-content: 108px;
   --gap-content: 40px;
-
-  /* Shape & shadow */
   --radius-card: 16px;
   --radius-ui: 10px;
   --shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-
-  /* Font */
   --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* =========================
-   Reset
-========================= */
+/* base*/
 *,
 *::before,
 *::after {
@@ -66,9 +55,7 @@ button {
   font-family: var(--font);
 }
 
-/* =========================
-   Layout Principal
-========================= */
+/* Layout Principal */
 .container {
   max-width: var(--container);
   margin: 0 auto;
@@ -99,9 +86,7 @@ button {
   gap: var(--gap-content);
 }
 
-/* =========================
-   Grid Layouts Dashboard
-========================= */
+/* Grid dashboard */
 .dashPerfCharts {
   display: grid;
   grid-template-columns: minmax(400px, 445px) minmax(500px, 583px);
@@ -122,14 +107,39 @@ button {
   gap: 19px;
 }
 
-/* =========================
-   Chart Specific
-========================= */
+/* Components */
+
+.dashCard {
+  background: #ffffff;
+  border-radius: var(--radius-card);
+}
+
+.dashLoading {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.dashError {
+  margin: 0;
+  font-size: 14px;
+  color: #dc2626;
+}
 
 
-/* =========================
-   Responsive
-========================= */
+.dashChart {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.dashSmallLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: #707070;
+}
+
+/* responsive */
 @media (max-width: 1100px) {
   .dashPerfCharts,
   .dashWeekGrid {
