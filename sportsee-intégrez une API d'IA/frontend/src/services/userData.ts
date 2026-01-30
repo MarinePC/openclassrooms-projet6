@@ -6,25 +6,19 @@ import { mockGetUserInfo, mockGetUserActivity, DEFAULT_USER_ID } from "@/mocks/a
 
 import { toISODate, normalizeISODateKey } from "@/services/date";
 
-/* =====================
-   Source des données
-===================== */
+/* Source de données */
 
 export type DataSource = "mock" | "api";
 
-/* =====================
-   Types exposés à l'UI
-===================== */
-
 export type ActivityDatum = {
-  date: string; // "YYYY-MM-DD"
-  distance: number; // km
-  duration: number; // minutes
+  date: string; 
+  distance: number; 
+  duration: number; 
   caloriesBurned: number;
 };
 
 export type HeartRateDatum = {
-  date: string; // "YYYY-MM-DD"
+  date: string; 
   min: number;
   max: number;
   average: number;
@@ -49,9 +43,7 @@ export type MonthlyKmBlock = {
   weeks: MonthlyKmWeekBar[];
 };
 
-/* =====================
-   Helpers
-===================== */
+/* helpers */
 
 function safeISODate(date: string): string {
   return normalizeISODateKey(date) ?? date;
@@ -63,18 +55,7 @@ function toNumberOrNaN(v: unknown): number {
   return NaN;
 }
 
-/**
- * 🎯 Résout le weeklyGoal depuis plusieurs sources possibles
- * 
- * L'API peut renvoyer le goal sous différents formats:
- * - { weeklyGoal: 5 }
- * - { goal: 5 }
- * - { statistics: { weeklyGoal: 5 } }
- * - { userInfos: { goal: 5 } }
- * 
- * Cette fonction gère tous les cas pour éviter les bugs.
- * Si absent/invalide => retourne 0
- */
+/* goal */
 function resolveWeeklyGoal(raw: any): number {
   const candidates = [
     raw?.weeklyGoal,
@@ -103,13 +84,7 @@ function resolveWeeklyGoal(raw: any): number {
   return 0;
 }
 
-/**
- * Déballe les réponses API courantes :
- * - { ...user }
- * - { data: { ...user } }
- * - { user: { ...user } }
- * - [ { ...user1 }, { ...user2 } ]
- */
+
 function unwrapApiUser(rawResponse: any, userId: string) {
   if (Array.isArray(rawResponse)) {
     const found =
@@ -128,10 +103,7 @@ function round1(n: number) {
   return Math.round(n * 10) / 10;
 }
 
-/**
- * Si l'API renvoie un RawUser (data.json-like) avec runningData,
- * on reconstruit des statistiques propres (comme le mock).
- */
+
 function computeStatsFromRunningData(candidate: any) {
   const runningData: any[] = Array.isArray(candidate?.runningData) ? candidate.runningData : [];
   if (!runningData.length) return null;
@@ -143,9 +115,7 @@ function computeStatsFromRunningData(candidate: any) {
   return { totalDistance, totalSessions, totalDuration };
 }
 
-/* =====================
-   Normalisation listes
-===================== */
+/* normalisation listes */
 
 function normalizeActivity(list: UserActivity[]): ActivityDatum[] {
   return list.map((a) => ({
@@ -165,31 +135,24 @@ function normalizeHeartRate(list: UserActivity[]): HeartRateDatum[] {
   }));
 }
 
-/* =====================
-   Fetch raw activities
-===================== */
+/* Fetch activities */
 
 async function fetchUserActivityRaw(source: DataSource, userId: string): Promise<UserActivity[]> {
   if (source === "mock") return mockGetUserActivity(userId);
 
-  // ⚠️ adapte si ton backend n'accepte pas userId en query
+  
   const url = `/api/user-activity?startWeek=2000-01-01&endWeek=2100-01-01&userId=${encodeURIComponent(
     userId
   )}`;
 
   const list = await apiClient.get<UserActivity[]>(url);
 
-  // normalise date => YYYY-MM-DD
   return list.map((a) => ({ ...a, date: safeISODate((a as any).date) }));
 }
 
-/* =====================
-   Exports consommés par l'UI
-===================== */
+/* Exports consommés par l'UI */
 
-/**
- * Récupère les informations utilisateur (profil + statistiques)
- */
+/* Récupère les info user */
 export async function getUserInfo(
   source: DataSource,
   userId: string = DEFAULT_USER_ID
@@ -198,7 +161,7 @@ export async function getUserInfo(
     return mockGetUserInfo(userId);
   }
 
-  // ⚠️ adapte si ton backend n'accepte pas userId en query
+  
   const url = `/api/user-info?userId=${encodeURIComponent(userId)}`;
   const rawResponse = await apiClient.get<any>(url);
 
@@ -207,16 +170,12 @@ export async function getUserInfo(
     throw new Error("API: user-info vide ou utilisateur introuvable");
   }
 
-  // 1) weeklyGoal : weeklyGoal ou goal (racine / userInfos / statistics)
-  const weeklyGoal = resolveWeeklyGoal(candidate);
 
-  // 2) Profile : API peut renvoyer "profile" (déjà normalisé) OU "userInfos" (raw)
+  const weeklyGoal = resolveWeeklyGoal(candidate);
   const profile = candidate?.profile ?? candidate?.userInfos;
   if (!profile) {
     throw new Error("API: profil introuvable (profile/userInfos manquant)");
   }
-
-  // 3) Stats : soit déjà présentes (UserInfo), soit à reconstruire via runningData (RawUser)
   const computed = computeStatsFromRunningData(candidate);
 
   const tdRaw = candidate?.statistics?.totalDistance ?? candidate?.totalDistance ?? computed?.totalDistance ?? 0;
@@ -248,9 +207,7 @@ export async function getUserInfo(
   return normalized;
 }
 
-/**
- * Récupère toutes les activités brutes (avec heartRate)
- */
+/* recup activité */
 export async function getAllUserActivityRaw(
   source: DataSource,
   userId: string = DEFAULT_USER_ID
@@ -258,9 +215,6 @@ export async function getAllUserActivityRaw(
   return fetchUserActivityRaw(source, userId);
 }
 
-/**
- * Récupère les activités (distance, durée, calories)
- */
 export async function getUserActivity(
   source: DataSource,
   userId: string = DEFAULT_USER_ID
@@ -269,9 +223,7 @@ export async function getUserActivity(
   return normalizeActivity(list);
 }
 
-/**
- * Récupère les données de fréquence cardiaque
- */
+/* recup bpm */
 export async function getUserHeartRate(
   source: DataSource,
   userId: string = DEFAULT_USER_ID
@@ -281,18 +233,18 @@ export async function getUserHeartRate(
 }
 
 
-// ===== Profil (UI helpers) =====
+/* profil user */ 
 
 export type ProfileUserUI = {
   fullName: string;
   firstName: string;
   lastName: string;
-  memberSinceISO: string; // "YYYY-MM-DD"
-  memberSinceFormatted: string; // "14 juin 2023"
+  memberSinceISO: string;
+  memberSinceFormatted: string; 
   age: number;
   gender: string;
-  height: number; // cm
-  weight: number; // kg
+  height: number;
+  weight: number; 
   avatarUrl: string | null;
 };
 
@@ -309,16 +261,15 @@ function resolveMemberSinceISO(user: any, activity?: ActivityDatum[]): string {
   const first = candidates[0];
   if (typeof first === "string" && first.length >= 10) return safeISODate(first);
 
-  // fallback intelligent : si rien, on prend la date la plus ancienne des activités
   if (activity?.length) {
     const dates = activity
       .map((a) => a.date)
       .filter(Boolean)
-      .sort(); // YYYY-MM-DD => tri lexical OK
+      .sort(); 
     if (dates[0]) return safeISODate(dates[0]);
   }
 
-  // fallback ultime : aujourd’hui
+
   return new Date().toISOString().slice(0, 10);
 }
 
@@ -337,9 +288,7 @@ function resolveAvatarUrl(user: any): string | null {
   return (candidates[0] as string | undefined) ?? null;
 }
 
-/**
- * Formate une date ISO en format français "14 juin 2023"
- */
+/* format des dates */
 function formatFrenchDate(isoDate: string): string {
   try {
     const date = new Date(`${isoDate}T00:00:00`);
@@ -387,7 +336,7 @@ export type ProfileStats = {
   restDays: number;
 };
 
-// "jours depuis inscription"
+/* date inscription */
 function diffDaysFromToday(startISO: string): number {
   const start = new Date(startISO);
   const today = new Date();
@@ -397,11 +346,7 @@ function diffDaysFromToday(startISO: string): number {
   return Math.max(Math.floor(ms / (1000 * 60 * 60 * 24)), 0);
 }
 
-/**
- * ⚠️ Suit ton cahier des charges :
- * - jours de repos = (jours depuis inscription) - (nombre de sessions)
- * Hypothèse implicite : 1 session max / jour.
- */
+/* jours repos */
 export function computeProfileStats(
   activity: ActivityDatum[],
   memberSinceISO: string
