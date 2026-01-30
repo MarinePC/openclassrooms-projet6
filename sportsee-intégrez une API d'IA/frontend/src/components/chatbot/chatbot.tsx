@@ -1,3 +1,5 @@
+// src/components/chatbot.tsx
+
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -7,9 +9,6 @@ type ChatMsg = { id: string; role: Role; content: string };
 
 const MAX_CHARS = 300;
 const MAX_HISTORY = 10;
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "http://localhost:3001";
 
 function uid() {
   return crypto.randomUUID();
@@ -22,15 +21,20 @@ function getToken() {
 type Props = {
   profilePicture?: string | null;
   fullName?: string | null;
+  userInfo?: any;
+  recentActivities?: any[];
 };
 
-export default function ChatbotPanel({ profilePicture = null, fullName = null }: Props) {
+export default function ChatbotPanel({ 
+  profilePicture = null, 
+  fullName = null,
+  userInfo = null,
+  recentActivities = []
+}: Props) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Si l'image ne charge pas, on force fallback
   const [avatarOk, setAvatarOk] = useState(true);
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -46,24 +50,27 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
     }));
   }, [messages]);
 
-  // Debug: tu sauras si la prop arrive vraiment
-  useEffect(() => {
-    console.log("[ChatbotPanel] profilePicture =", profilePicture);
-  }, [profilePicture]);
+  const userDataForApi = useMemo(() => {
+    if (!userInfo) return null;
 
-  // Auto-scroll
+    return {
+      profile: userInfo.profile || null,
+      statistics: userInfo.statistics || null,
+      recentActivities: (recentActivities || []).slice(0, 10),
+    };
+  }, [userInfo, recentActivities]);
+
+  /* Auto-scroll */ 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  // Auto-resize textarea
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.style.height = "24px";
     inputRef.current.style.height = inputRef.current.scrollHeight + "px";
   }, [input]);
 
-  // Si l'URL change, on retente le chargement
   useEffect(() => {
     setAvatarOk(true);
   }, [profilePicture]);
@@ -91,13 +98,17 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
         const token = getToken();
         if (!token) throw new Error("Vous n'êtes pas connecté. Veuillez vous reconnecter.");
 
-        const res = await fetch(`${API_BASE}/api/chat`, {
+        const res = await fetch("http://localhost:8000/api/chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ message: text, history: historyForApi }),
+          body: JSON.stringify({ 
+            message: text, 
+            history: historyForApi,
+            userData: userDataForApi
+          }),
         });
 
         if (!res.ok) {
@@ -128,7 +139,7 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
         inputRef.current?.focus();
       }
     },
-    [historyForApi, input, isLoading]
+    [historyForApi, input, isLoading, userDataForApi]
   );
 
   const onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
@@ -167,17 +178,12 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
                       <div className="chatBubbleContent">{m.content}</div>
                     </div>
 
-                    {/* Avatar user */}
                     {profilePicture && avatarOk ? (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         className="chatUserAvatar"
                         src={profilePicture}
                         alt={fullName ?? "Utilisateur"}
-                        onError={() => {
-                          console.error("[ChatbotPanel] Avatar failed:", profilePicture);
-                          setAvatarOk(false);
-                        }}
+                        onError={() => setAvatarOk(false)}
                       />
                     ) : (
                       <div className="chatUserAvatarFallback" aria-hidden="true">
@@ -207,7 +213,6 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
               <div className="chatRow chatRowBot">
                 <img className="chatbotIcon" src="/chatbot-answer.svg" alt="chatbot-answer" />
 
-                {/* ✅ MODIFICATION : Supprimer la colonne et le label, garder juste les dots */}
                 <div className="chatBubbleTyping">
                   <span className="typingDots" aria-label="Chargement">
                     <i></i>
@@ -245,8 +250,6 @@ export default function ChatbotPanel({ profilePicture = null, fullName = null }:
       <div className="chatComposer">
         <div className="chatInputWrap">
           <div className="chatInputLine">
-            {/* NOTE: si la maquette veut l'icône dans la bulle bot, on la déplacera ensuite */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="dashAskIcon" src="/stars-chatbot.svg" alt="stars-chatbot" />
 
             <textarea
