@@ -1,16 +1,8 @@
+// backend/app/middleware.js
 const jwt = require("jsonwebtoken");
+const { SECRET_KEY } = require("./config");
 
-const SECRET_KEY = "your-secret-key-12345"; // In a real app, this would be in environment variables
-
-const handleNoUserData = (res, userData) => {
-  if (!userData) {
-    res.statusCode = 404;
-    return res.json("can not get user");
-  }
-
-  return res.json({ data: userData });
-};
-
+/* vérif token */
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -28,12 +20,12 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
+/* générer token */
 const generateToken = (userId) => {
   return jwt.sign({ userId }, SECRET_KEY, { expiresIn: "24h" });
 };
 
 module.exports = {
-  handleNoUserData,
   authenticateToken,
   generateToken,
 };
