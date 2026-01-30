@@ -1,30 +1,27 @@
 // backend/app/chatRoutes.js
+
 const express = require("express");
 const { authenticateToken } = require("./middleware");
-const { SYSTEM_PROMPT } = require("./systemPrompt");
+const { SYSTEM_PROMPT, buildSystemPromptWithContext } = require("./systemPrompt");
+const { buildUserContext, sanitizeUserData } = require("./userContextBuilder");
+const {
+  MISTRAL_API_KEY,
+  MISTRAL_API_URL,
+  MISTRAL_MODEL,
+  MAX_MESSAGE_LENGTH,
+  MAX_HISTORY_LENGTH,
+  MAX_TOKENS,
+  REQUEST_TIMEOUT,
+} = require("./config");
 
 const router = express.Router();
 
-/**
- * GET /api/prompt/system
- * Sert le prompt système au backend NextJS
- * (pas de données sensibles, c'est du texte statique)
- */
+/* retourne le prompt */
 router.get("/api/prompt/system", (req, res) => {
   return res.json({ systemPrompt: SYSTEM_PROMPT });
 });
 
-// Configuration Mistral AI
-const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
-const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
-const MISTRAL_MODEL = "mistral-small-latest";
-
-// Limites de sécurité
-const MAX_MESSAGE_LENGTH = 500;
-const MAX_HISTORY_LENGTH = 10;
-const MAX_TOKENS = 500;
-const REQUEST_TIMEOUT = 30000;
-
+/* nettoie + valide le texte d'entrée */
 function sanitizeInput(text) {
   if (typeof text !== "string") return "";
   return text
@@ -33,6 +30,7 @@ function sanitizeInput(text) {
     .slice(0, MAX_MESSAGE_LENGTH);
 }
 
+/* historique de conversation */
 function validateHistory(history) {
   if (!Array.isArray(history)) return [];
   return history
@@ -50,6 +48,7 @@ function validateHistory(history) {
     }));
 }
 
+/* connexion + condition vers API Mistral AI */
 async function callMistralAPI(messages) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -87,21 +86,21 @@ async function callMistralAPI(messages) {
   }
 }
 
-// ✅ Route avec authentification optionnelle
-// Si le token est présent, on le valide, sinon on continue quand même
+/* point d'entrée du chatbot */
 router.post("/api/chat", async (req, res) => {
   const startTime = Date.now();
+  const isDev = process.env.NODE_ENV === "development";
 
   try {
-    // Vérification de la clé API
+    /* verif clé api */
     if (!MISTRAL_API_KEY) {
-      console.error("[CHAT] Missing MISTRAL_API_KEY in environment variables");
+      console.error("[CHAT] Missing MISTRAL_API_KEY");
       return res.status(500).json({ error: "Configuration serveur manquante" });
     }
 
-    // Extraction et validation du message
-    const { message, history } = req.body;
+    const { message, history, userData } = req.body;
 
+    /* valide message */ 
     if (!message || typeof message !== "string") {
       console.warn("[CHAT] Invalid message format");
       return res.status(400).json({ error: "Message invalide" });
@@ -116,41 +115,49 @@ router.post("/api/chat", async (req, res) => {
 
     const validatedHistory = validateHistory(history);
 
-    // Construction des messages pour Mistral
+    /* traitement donées user */ 
+    const sanitizedUserData = sanitizeUserData(userData);
+    const userContext = sanitizedUserData ? buildUserContext(sanitizedUserData) : null;
+
+    /* prompt system + context */ 
+    const systemPrompt = buildSystemPromptWithContext(userContext);
+
+     /* log simplifier */
+    if (isDev && userContext) {
+      console.log("[CHAT] User context included", {
+        hasProfile: !!sanitizedUserData?.profile,
+        hasStats: !!sanitizedUserData?.statistics,
+        activitiesCount: sanitizedUserData?.recentActivities?.length || 0,
+      });
+    }
+
+    /* messages vers Mistral */
     const messages = [
-      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: systemPrompt },
       ...validatedHistory,
       { role: "user", content: sanitizedMessage },
     ];
 
     console.log("[CHAT] Calling Mistral API...");
 
-    // Appel à l'API Mistral
+    /* Appel à l'API Mistral */ 
     const mistralResponse = await callMistralAPI(messages);
 
     const reply = mistralResponse?.choices?.[0]?.message?.content || "";
-    
+
     if (!reply) {
       console.error("[CHAT] Empty response from Mistral API");
       return res.status(500).json({ error: "Réponse vide de l'IA" });
     }
 
     const duration = Date.now() - startTime;
-    console.log("[CHAT] Success", {
-      duration: `${duration}ms`,
-      replyLength: reply.length,
-    });
+    console.log(`[CHAT] Success (${duration}ms)`);
 
     return res.json({ reply });
-    
   } catch (error) {
     const duration = Date.now() - startTime;
 
-    console.error("[CHAT] Error", {
-      duration: `${duration}ms`,
-      error: error?.message,
-      stack: process.env.NODE_ENV === "development" ? error?.stack : undefined,
-    });
+    console.error(`[CHAT] Error (${duration}ms):`, error?.message);
 
     if (String(error?.message || "").includes("timeout")) {
       return res.status(504).json({ error: "L'IA met trop de temps à répondre. Réessayez." });
@@ -159,6 +166,12 @@ router.post("/api/chat", async (req, res) => {
     if (String(error?.message || "").includes("API")) {
       return res.status(502).json({ error: "Problème de communication avec l'IA. Réessayez." });
     }
+
+    return res.status(500).json({ error: "Une erreur est survenue. Réessayez." });
+  }
+});
+
+module.exports = router;
 
     return res.status(500).json({ error: "Une erreur est survenue. Réessayez." });
   }
