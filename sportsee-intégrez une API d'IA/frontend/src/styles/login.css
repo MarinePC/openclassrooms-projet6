@@ -24,7 +24,7 @@
 .loginCardWrap {
   display: grid;
   place-items: center;
-  padding-top: 20px; /* ajuste 0-40px max */
+  padding-top: 20px; 
 }
 
 
@@ -113,7 +113,7 @@
 .loginFields {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* 24px entre inputs */
+  gap: 24px; 
 }
 .loginActions {
   display: flex;
