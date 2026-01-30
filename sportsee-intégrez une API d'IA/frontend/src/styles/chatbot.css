@@ -1,4 +1,4 @@
-/* frontend/src/components/chatbot/chatbot.css */
+/* src/styles/chatbot.css */
 
 .chatPanel {
   height: 100%;
@@ -8,7 +8,7 @@
   background: #FAFBFF;
 }
 
-/* Zone messages scrollable */
+/* Zone scrollable */
 .chatMessages {
   flex: 1;
   min-height: 0;
@@ -20,7 +20,7 @@
   align-items: center;
 }
 
-/* État vide - titre centré */
+/* titre */
 .chatEmpty {
   text-align: center;
   font-size: 22px;
@@ -30,7 +30,6 @@
   margin-top: 79px;
 }
 
-/* Thread de messages */
 .chatThread {
   display: flex;
   flex-direction: column;
@@ -38,9 +37,7 @@
   width: 100%;
 }
 
-/* =========================
-   Rows (alignement + avatar)
-========================= */
+/* structure discussions */
 .chatRow {
   display: flex;
   align-items: flex-start;
@@ -53,12 +50,10 @@
 
 .chatRowBot {
   justify-content: flex-start;
-}
-.chatRowBot{
   align-items: flex-end;
 }
 
-/* Avatar utilisateur */
+/* Avatar user */
 .chatUserAvatar {
   width: 40px;
   height: 40px;
@@ -82,9 +77,7 @@
   flex-shrink: 0;
 }
 
-/* =========================
-   Bulles
-========================= */
+/* Bulles */
 .chatBubble {
   border-radius: 20px;
   padding: 16px 20px;
@@ -100,14 +93,14 @@
   word-wrap: break-word;
 }
 
-/* Bulle utilisateur - rose */
+/* Bulle user */
 .chatBubbleUser {
   background: #FED7D7;
   max-width: 500px;
   border-radius: 20px;
 }
 
-/* Bulle bot - gris clair */
+/* Bulle ai */
 .chatBubbleBot {
   background: #E5E7EB;
   max-width: 600px;
@@ -116,17 +109,13 @@
   border-bottom-right-radius: 20px;
 }
 
-/* =========================
-   Bot Layout
-========================= */
-/* Icône bot à GAUCHE - cercle rouge */
+/* chatbot */
 .chatbotIcon {
   width: 32px;
   height: 32px;
   align-items: flex-end;
 }
 
-/* Colonne bot (label + bulle) */
 .chatBotCol {
   display: flex;
   flex-direction: column;
@@ -135,7 +124,6 @@
   max-width: 600px;
 }
 
-/* Label "Coach AI" au-dessus */
 .chatBotLabel {
   font-size: 12px;
   color: #6B7280;
@@ -143,12 +131,10 @@
   padding-left: 4px;
 }
 
-/* =========================
-   Typing dots
-========================= */
+/* zone ecrit */
 .chatBubbleTyping {
-  background: transparent !important; /* ✅ Masquer la bulle grise */
-  padding: 0 !important; /* ✅ Retirer le padding */
+  background: transparent !important;
+  padding: 0 !important;
   min-width: auto !important;
   display: flex;
   align-items: center;
@@ -158,7 +144,7 @@
 .typingDots {
   display: inline-flex;
   align-items: center;
-  gap: 1px; /* ✅ Espacement de 1px entre les points */
+  gap: 1px;
   height: auto;
 }
 
@@ -176,15 +162,15 @@
 }
 
 .typingDots i:nth-child(2) {
-  animation-delay: 0.4s; /* ✅ Démarre quand le 1er finit */
+  animation-delay: 0.4s;
 }
 
 .typingDots i:nth-child(3) {
-  animation-delay: 0.8s; /* ✅ Démarre quand le 2ème finit */
+  animation-delay: 0.8s;
 }
 
 .typingDots i:nth-child(4) {
-  animation-delay: 1.2s; /* ✅ Démarre quand le 3ème finit */
+  animation-delay: 1.2s;
 }
 
 @keyframes typing-wave-sequential {
@@ -192,19 +178,17 @@
     transform: translateY(0);
   }
   12.5% {
-    transform: translateY(-3px); /* ✅ Monte */
+    transform: translateY(-3px);
   }
   25% {
-    transform: translateY(0); /* ✅ Redescend */
+    transform: translateY(0);
   }
   100% {
-    transform: translateY(0); /* ✅ Reste en bas jusqu'à son prochain tour */
+    transform: translateY(0);
   }
 }
 
-/* =========================
-   Erreur
-========================= */
+/* Erreur */
 .chatErrorWrap {
   padding: 0 80px 12px;
   max-width: 800px;
@@ -231,23 +215,21 @@
   margin-left: 8px;
 }
 
-/* =========================
-   Composer en bas
-========================= */
+/* zone ecrit */
 .chatComposer {
   padding: 24px 80px 32px;
   background: #FAFBFF;
 }
 
 .chatInputWrap {
-  height: 130px ;
+  height: 130px;
   position: relative;
   border: 1px solid #E7E7E7;
   border-radius: 16px;
   background: #FFFFFF;
   padding: 16px;
   display: flex;
-  align-items: flex-start; /* ✅ MODIFIÉ : flex-start au lieu de center */
+  align-items: flex-start;
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -258,11 +240,6 @@
   gap: 12px;
   flex: 1;
   padding-right: 60px;
-}
-
-.chatInputStar {
-  width: 20px;
-  height: 20px;
 }
 
 .chatInputArea {
@@ -283,7 +260,7 @@
   color: #9CA3AF;
 }
 
-.chatSend{
+.chatSend {
   position: absolute;
   right: 16px;
   bottom: 16px;
@@ -309,14 +286,12 @@
   cursor: not-allowed;
 }
 
-/* =========================
-   Chips (quick prompts)
-========================= */
+/* Chips */
 .chatChips {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  height: 70px;;
+  height: 70px;
 }
 
 .chatChip {
@@ -340,9 +315,7 @@
   cursor: not-allowed;
 }
 
-/* =========================
-   Modal
-========================= */
+/* Modal */
 .chatOverlay {
   position: fixed;
   inset: 0;
@@ -417,4 +390,5 @@
   .chatBubbleBot {
     max-width: 85%;
   }
+}
 }
