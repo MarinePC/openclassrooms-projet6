@@ -8,19 +8,20 @@ type Props = {
   open: boolean;
   onClose: () => void;
   profilePicture?: string | null;
-  fullName?: string | null;  // ✅ AJOUT
+  fullName?: string | null;
+  userInfo?: any;
+  recentActivities?: any[];
 };
 
-export default function ChatbotModal({ open, onClose, profilePicture, fullName }: Props) {
-  // Debug: vérifier que la modale reçoit bien la photo et le nom
-  useEffect(() => {
-    if (!open) return;
-    // eslint-disable-next-line no-console
-    console.log("[ChatbotModal] profilePicture =", profilePicture);
-    console.log("[ChatbotModal] fullName =", fullName);
-  }, [open, profilePicture, fullName]);
-
-  // Escape + lock scroll
+export default function ChatbotModal({ 
+  open, 
+  onClose, 
+  profilePicture, 
+  fullName,
+  userInfo,
+  recentActivities 
+}: Props) {
+  
   useEffect(() => {
     if (!open) return;
 
@@ -48,7 +49,6 @@ export default function ChatbotModal({ open, onClose, profilePicture, fullName }
       aria-modal="true"
       aria-label="Coach AI"
       onMouseDown={(e) => {
-        // Fermer uniquement si clic sur l'overlay
         if (e.target === e.currentTarget) onClose();
       }}
     >
@@ -58,10 +58,11 @@ export default function ChatbotModal({ open, onClose, profilePicture, fullName }
         </button>
 
         <div className="chatShell">
-          {/* ✅ CORRECTION : Transmettre profilePicture ET fullName */}
           <ChatbotPanel 
             profilePicture={profilePicture ?? null}
             fullName={fullName ?? null}
+            userInfo={userInfo}
+            recentActivities={recentActivities}
           />
         </div>
       </div>
