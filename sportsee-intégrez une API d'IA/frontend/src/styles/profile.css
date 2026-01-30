@@ -9,7 +9,7 @@ max-width: var(--container);
 
 
 .profileMain {
-  flex: 1;              /* IMPORTANT : prend l’espace restant */
+  flex: 1;       
   width: 100%;
 }
 
@@ -32,7 +32,7 @@ max-width: var(--container);
   box-shadow: 0 8px 24px rgba(18, 18, 18, 0.06);
 }
 
-/* ===== Left column ===== */
+/* bloc gauche */
 
 .profileColLeft {
   display: grid;
@@ -112,7 +112,7 @@ max-width: var(--container);
 }
 
 
-/* ===== Right column ===== */
+/* bloc droite */
 
 .profileStatsHeader {
   margin-top: 6px;
