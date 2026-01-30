@@ -1,16 +1,17 @@
 // backend/app/routes.js
+
 const express = require("express");
 const jwt = require("jsonwebtoken");
-
+const { SECRET_KEY } = require("./config");
 const users = require("./data.json");
 const { authenticateToken, generateToken } = require("./middleware");
 
 const router = express.Router();
 
-const SECRET_KEY = "your-secret-key-12345"; // idéalement en env var
-
+/* fonction help : trouver user */
 const getUserById = (userId) => users.find((user) => user.id === userId);
 
+/* fonction help : récupérer l'objectif hebdo */ 
 const resolveWeeklyGoal = (user) => {
   const candidates = [
     user?.weeklyGoal,
@@ -24,7 +25,7 @@ const resolveWeeklyGoal = (user) => {
   return typeof found === "number" ? found : 0;
 };
 
-// ✅ Normalisation gender pour l'UI (male/female -> Homme/Femme)
+/* gender */ 
 function normalizeGender(gender) {
   if (!gender) return null;
 
@@ -33,14 +34,10 @@ function normalizeGender(gender) {
   if (g === "male" || g === "m") return "Homme";
   if (g === "female" || g === "f") return "Femme";
 
-  // fallback : on renvoie la valeur telle quelle (ou null si tu préfères)
   return gender;
 }
 
-/**
- * POST /login ✅ (aligné avec le README)
- * Returns a token for the user
- */
+/* authentifie user et le token */
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -57,14 +54,14 @@ router.post("/login", (req, res) => {
   return res.json({ token, userId: user.id });
 });
 
-/**
- * GET /api/user-info ✅
- * Returns user information including profile, goals, and statistics
- */
+/* retour des infos de profil et des stat user */
 router.get("/api/user-info", authenticateToken, (req, res) => {
   const auth = req.headers.authorization || "";
   const token = auth.startsWith("Bearer ") ? auth.split(" ")[1] : null;
-  if (!token) return res.status(401).json({ message: "Missing token" });
+  
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
 
   let decodedToken;
   try {
@@ -74,11 +71,13 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
   }
 
   const user = getUserById(decodedToken.userId);
-  if (!user) return res.status(404).json({ message: "User not found" });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
 
   const runningData = Array.isArray(user.runningData) ? user.runningData : [];
 
-  // Calculate overall statistics
+  /* calcul stat globales */ 
   const totalDistance = runningData
     .reduce((sum, session) => sum + (Number(session.distance) || 0), 0)
     .toFixed(1);
@@ -90,7 +89,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
     0
   );
 
-  // Extract user profile information
+  /* extraction info profil user */
   const userProfile = {
     firstName: user.userInfos.firstName,
     lastName: user.userInfos.lastName,
@@ -98,7 +97,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
     age: user.userInfos.age,
     weight: user.userInfos.weight,
     height: user.userInfos.height,
-    gender: normalizeGender(user.userInfos.gender), // ✅ ici
+    gender: normalizeGender(user.userInfos.gender),
     profilePicture: user.userInfos.profilePicture,
   };
 
@@ -115,10 +114,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
   });
 });
 
-/**
- * GET /api/user-activity ✅
- * Returns running sessions between startWeek and endWeek
- */
+/* retourne les séances de course entre deux dates */
 router.get("/api/user-activity", authenticateToken, (req, res) => {
   const { startWeek, endWeek } = req.query;
 
@@ -127,7 +123,9 @@ router.get("/api/user-activity", authenticateToken, (req, res) => {
   }
 
   const user = getUserById(req.user.userId);
-  if (!user) return res.status(404).json({ message: "User not found" });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
 
   const runningData = Array.isArray(user.runningData) ? user.runningData : [];
 
