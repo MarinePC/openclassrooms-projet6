@@ -38,9 +38,7 @@ import {
   minISO,
 } from "@/services/utils";
 
-/* =====================
-   KM (4 semaines)
-===================== */
+/* KM */
 
 function buildLast4WeeksBlock(
   windowEnd: Date,
@@ -86,9 +84,7 @@ function buildLast4WeeksBlock(
   };
 }
 
-/* =====================
-   BPM (Composed)
-===================== */
+/* BPM */
 
 export type HeartComposedDatum = {
   day: string; // Lun..Dim
@@ -103,9 +99,7 @@ export type StatValueUnit = {
   unit: "minutes" | "kilomètres";
 };
 
-/* =====================
-   Hook
-===================== */
+/* hook */
 
 export function useDashboardData(params: {
   isAuthenticated: boolean;
@@ -150,7 +144,7 @@ export function useDashboardData(params: {
         setActivities(acts);
         setHeartRate(hr);
 
-        // Caler sur la dernière activité si possible (sinon HR)
+        
         const lastActISO = acts.length ? maxISO(acts.map((a) => a.date)) : null;
         if (lastActISO) {
           const last = parseISODate(lastActISO);
@@ -175,9 +169,7 @@ export function useDashboardData(params: {
     };
   }, [isAuthenticated, dataSource, userId]);
 
-  /* =====================
-     Bloc 1 : KM (4 semaines)
-  ===================== */
+  /* Bloc 1 */
 
   const windowActivities = useMemo(() => {
     if (!activities.length) return [];
@@ -233,9 +225,7 @@ export function useDashboardData(params: {
     setWindowEnd((d) => addDays(d, 28));
   };
 
-  /* =====================
-     Semaine (lun → dim) : BPM + Goal + Stats
-  ===================== */
+  /* Semaine */
 
   const weekStart = useMemo(() => startOfISOWeekMonday(weekAnchor), [weekAnchor]);
   const weekEnd = useMemo(() => addDays(weekStart, 6), [weekStart]);
@@ -251,7 +241,7 @@ export function useDashboardData(params: {
     });
   }, [activities, weekStart, weekEnd]);
 
-  // ✅ Goal Donut : goal = API (userInfo.statistics.weeklyGoal), done = nb d'activités sur la semaine affichée
+  // goal = API 
   const weeklyGoal: WeeklyGoalData | null = useMemo(() => {
     if (!userInfo) return null;
 
@@ -274,7 +264,7 @@ export function useDashboardData(params: {
     )}`;
   }, [weekStart, weekEnd]);
 
-  // ✅ Stats séparées valeur + unité (pour styliser "minutes" / "kilomètres")
+
   const weekDuration: StatValueUnit = useMemo(() => {
     const totalMin = weekActivities.reduce(
       (acc, a) => acc + (Number((a as any).duration) || 0),
@@ -293,9 +283,7 @@ export function useDashboardData(params: {
     return { value: round1(totalKm), unit: "kilomètres" };
   }, [weekActivities]);
 
-  /* =====================
-     BPM : données lun → dim
-  ===================== */
+  /* BPM */
 
   const heartComposedData: HeartComposedDatum[] = useMemo(() => {
     const labels = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
@@ -356,9 +344,7 @@ export function useDashboardData(params: {
     setWeekAnchor((d) => addDays(d, 7));
   };
 
-  /* =====================
-     Header
-  ===================== */
+  /* header */
 
   const fullName = userInfo
     ? `${userInfo.profile.firstName} ${userInfo.profile.lastName}`
@@ -406,8 +392,8 @@ export function useDashboardData(params: {
     // Bloc 3
     weeklyGoal,
     weekSubtitle,
-    weekDuration, // { value, unit }
-    weekDistance, // { value, unit }
+    weekDuration, 
+    weekDistance, 
 
     // states
     loadingBase,
