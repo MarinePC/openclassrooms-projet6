@@ -22,10 +22,7 @@ const resolveWeeklyGoal = (user) => {
   return typeof found === "number" ? found : 0;
 };
 
-/**
- * POST /login ✅ (aligné avec le README)
- * Returns a token for the user
- */
+/* authentifie user et le token */
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -42,10 +39,7 @@ router.post("/login", (req, res) => {
   return res.json({ token, userId: user.id });
 });
 
-/**
- * GET /api/user-info ✅
- * Returns user information including profile, goals, and statistics
- */
+/* retour des infos de profil et des stat user */
 router.get("/api/user-info", authenticateToken, (req, res) => {
   const auth = req.headers.authorization || "";
   const token = auth.startsWith("Bearer ") ? auth.split(" ")[1] : null;
@@ -63,7 +57,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
 
   const runningData = Array.isArray(user.runningData) ? user.runningData : [];
 
-  // Calculate overall statistics
+   /* calcul stat globales */ 
   const totalDistance = runningData
     .reduce((sum, session) => sum + (Number(session.distance) || 0), 0)
     .toFixed(1);
@@ -75,7 +69,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
     0
   );
 
-  // Extract user profile information
+/* extraction info profil user */
   const userProfile = {
     firstName: user.userInfos.firstName,
     lastName: user.userInfos.lastName,
@@ -99,10 +93,7 @@ router.get("/api/user-info", authenticateToken, (req, res) => {
   });
 });
 
-/**
- * GET /api/user-activity ✅
- * Returns running sessions between startWeek and endWeek
- */
+/* retourne les séances de course entre deux dates */
 router.get("/api/user-activity", authenticateToken, (req, res) => {
   const { startWeek, endWeek } = req.query;
 
